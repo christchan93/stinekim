@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스톤킴 구독이벤트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding: 1.5rem;
+            max-width: 28rem;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .link-button {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: #3b82f6;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .link-button:hover:not(.disabled) {
+            background-color: #2563eb;
+        }
+
+        .link-button.disabled {
+            background-color: #e5e7eb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .next-button {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .next-button:not(.disabled) {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .next-button:hover:not(.disabled) {
+            background-color: #059669;
+        }
+
+        .next-button.disabled {
+            background-color: #e5e7eb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .copy-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-button:hover {
+            background-color: #e5e7eb;
+        }
+
+        .phone-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: #10b981;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phone-button:hover {
+            background-color: #059669;
+        }
+
+        .disclaimer {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" id="mainPage">
+            <h1 class="title">스톤킴 구독이벤트</h1>
+            
+            <button class="link-button" id="kakaoButton" onclick="handleLinkClick('kakao')">
+                <span>카카오톡 친구추가</span>
+                <span class="arrow">→</span>
+            </button>
+
+            <button class="link-button disabled" id="youtubeButton" onclick="handleLinkClick('youtube')">
+                <span>유튜브 구독하기</span>
+                <span class="arrow">→</span>
+            </button>
+
+            <button class="link-button disabled" id="instagramButton" onclick="handleLinkClick('instagram')">
+                <span>인스타그램 팔로우</span>
+                <span class="arrow">→</span>
+            </button>
+
+            <button class="link-button disabled" id="tiktokButton" onclick="handleLinkClick('tiktok')">
+                <span>틱톡 팔로우</span>
+                <span class="arrow">→</span>
+            </button>
+
+            <button class="next-button disabled" id="nextButton" onclick="showFinalPage()">
+                다음
+            </button>
+        </div>
+
+        <div class="card hidden" id="finalPage">
+            <h2 class="title">링크 공유하기</h2>
+            
+            <div class="button-group">
+                <button class="copy-button" onclick="copyToClipboard('카카오톡 친구추가, 유튜브 구독, 인스타그램 팔로우, 틱톡 팔로우 완료')">
+                    <span>모두 완료</span>
+                    <span class="copy-icon">복사</span>
+                </button>
+
+                <button class="copy-button" onclick="copyToClipboard('카카오톡 친구추가, 유튜브 구독 완료')">
+                    <span>카카오톡 + 유튜브</span>
+                    <span class="copy-icon">복사</span>
+                </button>
+
+                <button class="copy-button" onclick="copyToClipboard('카카오톡 친구추가, 인스타그램 팔로우 완료')">
+                    <span>카카오톡 + 인스타그램</span>
+                    <span class="copy-icon">복사</span>
+                </button>
+
+                <button class="copy-button" onclick="copyToClipboard('카카오톡 친구추가, 틱톡 팔로우 완료')">
+                    <span>카카오톡 + 틱톡</span>
+                    <span class="copy-icon">복사</span>
+                </button>
+
+                <button class="phone-button" onclick="handlePhoneClick()">
+                    <span>메시지 보내기</span>
+                    <span class="phone-icon">📞</span>
+                </button>
+            </div>
+
+            <p class="disclaimer">
+                *위 내용이 사실과 다를 경우 이벤트 참여가 제한될 수 있습니다.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 링크 설정
+        const links = {
+            kakao: "http://pf.kakao.com/_fBxfxfn",
+            youtube: "https://www.youtube.com/@휘어지는타일",
+            instagram: "https://www.instagram.com/stonekim.official",
+            tiktok: "https://www.tiktok.com/@stonekim001"
+        };
+
+        // 방문 상태 추적
+        const visitedLinks = {
+            kakao: false,
+            youtube: false,
+            instagram: false,
+            tiktok: false
+        };
+
+        // 링크 클릭 처리
+        function handleLinkClick(platform) {
+            const button = document.getElementById(`${platform}Button`);
+            if (button.classList.contains('disabled')) {
+                return;
+            }
+
+            // 새 창에서 링크 열기
+            window.open(links[platform], '_blank');
+            
+            // 방문 상태 업데이트
+            visitedLinks[platform] = true;
+            
+            // 버튼 상태 업데이트
+            updateButtonStates();
+        }
+
+        // 버튼 상태 업데이트
+        function updateButtonStates() {
+            // 유튜브 버튼 활성화 조건: 카카오톡 방문
+            const youtubeButton = document.getElementById('youtubeButton');
+            if (visitedLinks.kakao) {
+                youtubeButton.classList.remove('disabled');
+            }
+
+            // 인스타그램 버튼 활성화 조건: 카카오톡 방문
+            const instagramButton = document.getElementById('instagramButton');
+            if (visitedLinks.kakao) {
+                instagramButton.classList.remove('disabled');
+            }
+
+            // 틱톡 버튼 활성화 조건: 카카오톡 방문
+            const tiktokButton = document.getElementById('tiktokButton');
+            if (visitedLinks.kakao) {
+                tiktokButton.classList.remove('disabled');
+            }
+
+            // 다음 버튼 활성화 조건: 카카오톡 + (유튜브 또는 인스타그램 또는 틱톡)
+            const nextButton = document.getElementById('nextButton');
+            if (visitedLinks.kakao && (visitedLinks.youtube || visitedLinks.instagram || visitedLinks.tiktok)) {
+                nextButton.classList.remove('disabled');
+            }
+        }
+
+        // 클립보드에 텍스트 복사
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    alert('링크가 복사되었습니다!');
+                })
+                .catch(err => {
+                    console.error('클립보드 복사 실패:', err);
+                    alert('링크 복사에 실패했습니다. 직접 텍스트를 선택하여 복사해주세요.');
+                });
+        }
+
+        // 전화번호 클릭 처리
+        function handlePhoneClick() {
+            window.location.href = 'tel:010-3312-7444';
+        }
+
+        // 최종 페이지 표시
+        function showFinalPage() {
+            const nextButton = document.getElementById('nextButton');
+            if (nextButton.classList.contains('disabled')) {
+                return;
+            }
+
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('finalPage').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
