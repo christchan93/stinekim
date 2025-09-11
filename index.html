@@ -278,9 +278,10 @@
                 });
         }
 
-        // 전화번호 클릭 처리
+        // 메시지 보내기 클릭 처리
         function handlePhoneClick() {
-            window.location.href = 'tel:010-7133-7444';
+            // SMS로 이동 (아이폰에서 바로 전화 걸리는 문제 해결)
+            window.location.href = 'sms:010-7133-7444';
         }
 
         // 최종 페이지 표시
